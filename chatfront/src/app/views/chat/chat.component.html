@@ -1,0 +1,28 @@
+<mat-card class="chat-panel">
+  <mat-drawer-container class="example-container">
+    <mat-drawer mode="side" opened>
+      <mat-selection-list #user [multiple]="false" (selectionChange)="selectUser($event)">
+        <mat-list-option *ngFor="let user of listUser" [value]="user">
+          <mat-icon mat-list-icon>person</mat-icon>
+          <div mat-line>{{ user }}</div>
+        </mat-list-option>
+      </mat-selection-list>
+    </mat-drawer>
+    <mat-drawer-content>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title> Chat </mat-card-title>
+        </mat-card-header>
+        <mat-card-content> Content Chat</mat-card-content>
+        <mat-card-footer>
+          <form>
+            <mat-form-field appearance="outline">
+              <input matInput type="text" />
+              <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+          </form>
+        </mat-card-footer>
+      </mat-card>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</mat-card>
