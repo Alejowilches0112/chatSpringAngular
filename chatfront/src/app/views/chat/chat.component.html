@@ -1,25 +1,48 @@
 <mat-card class="chat-panel">
   <mat-drawer-container class="example-container">
-    <mat-drawer mode="side" opened>
+    <mat-drawer mode="side" opened *ngIf="viewChat">
       <mat-selection-list #user [multiple]="false" (selectionChange)="selectUser($event)">
-        <mat-list-option *ngFor="let user of listUser" [value]="user">
-          <mat-icon mat-list-icon>person</mat-icon>
-          <div mat-line>{{ user }}</div>
-        </mat-list-option>
+        <span  *ngFor="let user of message.listUser">
+          <mat-list-option *ngIf="user != Usuario" [value]="user">
+            <mat-icon mat-list-icon>person</mat-icon>
+            <div mat-line>{{ user }}</div>
+          </mat-list-option>
+        </span>
       </mat-selection-list>
     </mat-drawer>
     <mat-drawer-content>
       <mat-card>
         <mat-card-header>
-          <mat-card-title> Chat </mat-card-title>
+          <mat-card-title> CHAT {{canal }}</mat-card-title>
         </mat-card-header>
-        <mat-card-content> Content Chat</mat-card-content>
-        <mat-card-footer>
+        <mat-card-actions>
+          <form>
+            <mat-form-field appearance="outline" *ngIf="!viewChat">
+              <input matInput [(ngModel)]="message.username" name="username" type="text" />
+            </mat-form-field>
+          </form>
+          <button mat-raised-button color="primary" (click)="conectar()" *ngIf="!viewChat">Conectar</button>
+          <button mat-raised-button color="warn" (click)="desconectar()" *ngIf="viewChat">Desconectar</button>
+        </mat-card-actions>
+        <mat-card-content *ngIf="viewChat && canal">
+          <div class="content-chat">
+            <mat-list role="list">
+              <span *ngFor="let mesg of listMessage">
+                <span *ngIf="(mesg.dentination.indexOf(canal) > -1 && mesg.dentination.indexOf(mesg.username) > -1) && mesg.username === message.username">
+                  <mat-list-item class="item-notification" role="listitem" *ngIf="mesg.tipo == 'NEW USER'">  <span [ngStyle]="{'color': mesg.color}"> {{mesg.timestamp | date:'shortTime'}} :  {{mesg.mensaje}}  {{mesg.username}} </span> </mat-list-item>
+                  <mat-list-item class="item-chat" role="listitem" *ngIf="mesg.tipo == 'MENSAJE'"> <span [ngStyle]="{'color': mesg.color}">  {{mesg.timestamp | date:'shortTime'}} : {{mesg.mensaje}} </span> </mat-list-item>
+                </span>
+              </span>
+            </mat-list>
+          </div>
+        </mat-card-content>
+        <mat-card-footer *ngIf="viewChat && canal">
           <form>
             <mat-form-field appearance="outline">
-              <input matInput type="text" />
+              <input matInput [(ngModel)]="message.mensaje" name="mensaje" type="text" />
               <mat-icon matSuffix>person</mat-icon>
             </mat-form-field>
+             <button mat-raised-button color="primary" (click)="sendMessage()">Enviar</button>
           </form>
         </mat-card-footer>
       </mat-card>
