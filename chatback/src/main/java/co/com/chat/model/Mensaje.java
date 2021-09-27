@@ -2,10 +2,19 @@ package co.com.chat.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "mensajes")
 
 public class Mensaje implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	private String id;
 
 	private String mensaje;
 
@@ -77,11 +86,12 @@ public class Mensaje implements Serializable {
 		this.listUser = listUser;
 	}
 
-	@Override
-	public String toString() {
-		return "Mensaje [color=" + color + ", dentination=" + dentination + ", listUser=" + listUser.toString()
-				+ ", mensaje=" + mensaje + ", timestamp=" + timestamp + ", tipo=" + tipo + ", username=" + username
-				+ "]";
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }
